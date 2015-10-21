@@ -5,12 +5,13 @@ typedef enum
 {
 	Link,Thread
 }PointTag;
-typedef stuct BiTNOde
+typedef struct BiTNOde
 {
 	ElemType data;
 	struct BiTNOde *lchild,*rchild;
 	PointTag ltag,rtag;
 }BiTNode,*BiTTree;
+
 BiTTree pre;
 //以前序遍历法创建二叉树 
 void createBiTTree(BiTTree &T)
@@ -36,7 +37,7 @@ void inThreading(BiTTree T)
 {
 	if( T )
 	{
-		inTreading(T->lchild);
+		inThreading(T->lchild);   //先序遍历左子树 
 		if(!T->lchild)
 		{
 			T->ltag = Thread;
@@ -47,11 +48,43 @@ void inThreading(BiTTree T)
 			pre->rtag = Thread;
 			pre->rchild = T;
 		}
-		inTreading(T->rchild);
+		pre = T; 
+		inThreading(T->rchild);   //先序遍历右子树 
 	}
 }
-void inorderThreading()
-
+void inorderThreading(BiTTree T,BiTTree &p)
+{
+	p = (BiTTree)malloc(sizeof(BiTNode));
+	if(!p) exit(0);
+	else
+	{
+		p->ltag = Link;
+		p->rtag = Thread;
+		p->rchild = p;
+	}
+	if(!T)
+	{
+		p->lchild = p;
+	}
+	else
+	{
+	
+		p->lchild = T;
+		pre = p;
+		inThreading(T);
+		pre->rchild = p;   /*最后处理工作*/ 
+		p->rtag = Thread;
+		p->rchild = pre;
+	}
+	
+}
+int main()
+{
+	BiTTree p,T = NULL;
+	createBiTTree(T);
+	inorderThreading(T,p);
+	return 0;
+}
 
 
 
