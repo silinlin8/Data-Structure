@@ -73,7 +73,7 @@ void inorderThreading(BiTTree T,BiTTree &p)
 		pre = p;
 		inThreading(T);
 		pre->rchild = p;   /*最后处理工作*/ 
-		p->rtag = Thread;
+		pre->rtag = Thread;
 		p->rchild = pre;
 	}
 	
